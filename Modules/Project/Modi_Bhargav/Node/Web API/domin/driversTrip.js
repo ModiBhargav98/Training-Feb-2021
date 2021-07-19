@@ -1,57 +1,72 @@
-const cityTrip = require("../models/trip_model");
-const outstationTrip = require("../models/outstation_trip");
-const rentalTrip = require("../models/rental_trip");
+const Trips = require("../models/DriverTrip");
 const express = require("express");
 const driverTripRouter = express.Router({ mergeParams: true });
 
 class DriverTrip {
-  static async drivertripFind(req, res) {
-    const cityTriphistory = await cityTrip.find();
-    const outstationTriphistory = await outstationTrip.find();
-    const rentalTriphistory = await rentalTrip.find();
+  static async driverTrips(req, res) {
+    const driverhistory = await Trips.find();
 
     try {
-      res.send({ cityTriphistory, outstationTriphistory, rentalTriphistory });
+      res.send(driverhistory);
     } catch (ex) {
       console.log(ex.message);
     }
   }
-  static async driverTrips(req, res) {
+  static async driverTripsFind(req, res) {
     const ID = parseInt(req.params.id);
 
-    const cityTrips = await cityTrip.find({ driverNumber: ID });
-    const cityCustomer = await cityTrip.find({ customerNumber: ID });
+    const driverTrips = await Trips.find({ driverNumber: ID });
 
-    const outstationTrips = await outstationTrip.find({
-      driverNumber: ID,
-    });
-    const outstationCustomer = await outstationTrip.find({
-      customerNumber: ID,
-    });
+    if (driverTrips.length === 0) {
+      return res.status(404).json({
+        message: "Not a Any Trips Avilables",
+      });
+    }
+    try {
+      res.send(driverTrips);
+    } catch (ex) {
+      console.log(ex.message);
+    }
+  }
 
-    const rentalTrips = await rentalTrip.find({ driverNumber: ID });
-    const rentalCustomer = await rentalTrip.find({
-      customerNumber: ID,
-    });
+  static async TripsFind(req, res) {
+    const ID = req.params.id;
+    const TripId = await Trips.find({ _id: ID });
 
-    if (cityTrips.length != 0) {
-      res.status(200).send(cityTrips);
-    } else if (cityCustomer.length != 0) {
-      res.status(200).send(cityCustomer);
-    } else if (outstationCustomer.length != 0) {
-      res.status(200).send(outstationCustomer);
-    } else if (rentalCustomer.length != 0) {
-      res.status(200).send(rentalCustomer);
-    } else if (outstationTrips.length != 0) {
-      res.status(200).send(outstationTrips);
-    } else if (rentalTrips.length != 0) {
-      res.status(200).send(rentalTrips);
-    } else {
-      res.status(404).send("Your Data is Not Avilable");
+    if (TripId.length === 0) {
+      return res.status(404).json({
+        message: "Not a Any Trips Avilables",
+      });
+    }
+    try {
+      res.send(TripId);
+    } catch (ex) {
+      console.log(ex.message);
+    }
+  }
+
+  static async UpdateData(req, res) {
+    const ID = req.params.id;
+    const dataUpdate = await Trips.find({ _id: ID });
+    if (dataUpdate.length == 0)
+      return res.status(404).send("Your Data Is Not Found");
+    const newData = req.body;
+    console.log(newData);
+    for (let i in newData) {
+      dataUpdate[0][i] = newData[i];
+    }
+    try {
+      const result = await dataUpdate[0].save();
+      res.send(result);
+    } catch (ex) {
+      for (let field in ex.errors) {
+        res.status(404).send(ex.errors[field].message);
+      }
     }
   }
 }
-driverTripRouter.get("/", DriverTrip.drivertripFind);
-driverTripRouter.get("/:id", DriverTrip.driverTrips);
-
+driverTripRouter.get("/", DriverTrip.driverTrips);
+driverTripRouter.get("/:id", DriverTrip.driverTripsFind);
+driverTripRouter.get("/trip/:id", DriverTrip.TripsFind);
+driverTripRouter.put("/:id", DriverTrip.UpdateData);
 module.exports = driverTripRouter;

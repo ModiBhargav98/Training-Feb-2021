@@ -1,52 +1,32 @@
-const cityDriver = require("../../../models/cityCar");
-const outstationDriver = require("../../../models/outstationCars");
-const rentalDriver = require("../../../models/rentalCar");
+const Drivers = require("../../../models/CarsAndDrivers");
 const express = require("express");
 const routerDriver = express.Router();
-
 const jwt = require("jsonwebtoken");
 
 class Login {
   static async driverLogin(req, res) {
     const driverData = {
-      Email1: req.body.Email,
-      passWord1: req.body.passWord,
+      Email: req.body.Email,
+      passWord: req.body.passWord,
     };
     let token = jwt.sign({ driverData }, global.config.secretKey, {
       algorithm: global.config.algorithm,
       expiresIn: "24h",
     });
-
-    const cityDriver1 = await cityDriver.findOne({
-      Email: driverData.Email1,
-      passWord: driverData.passWord1,
-    });
-    const outstationDriver1 = await outstationDriver.findOne({
-      Email: driverData.Email1,
-      passWord: driverData.passWord1,
-    });
-
-    const rentalDriver1 = await rentalDriver.findOne({
-      Email: driverData.Email1,
-      passWord: driverData.passWord1,
-    });
-    if (cityDriver1 !== null) {
+    const driverDatas = await Drivers.find();
+    var flag = 0;
+    for (var i of driverDatas) {
+      if (driverData.Email == i.Email && driverData.passWord == i.passWord) {
+        flag = 1;
+        break;
+      }
+    }
+    const driverId = await Drivers.find({ Email: driverData.Email });
+    if (flag == 1) {
       res.status(200).send({
-        message: "Login Successful cityDriver",
+        message: "Driver Login Successful",
         Token: token,
-        cityDriver1,
-      });
-    } else if (outstationDriver1 !== null) {
-      res.status(200).send({
-        message: "Login Successful outstationDriver",
-        Token: token,
-        outstationDriver1,
-      });
-    } else if (rentalDriver1 !== null) {
-      res.status(200).send({
-        message: "Login Successful rentalDriver",
-        Token: token,
-        rentalDriver1,
+        driver: driverId[0],
       });
     } else {
       res.status(401).send({
@@ -56,5 +36,4 @@ class Login {
   }
 }
 routerDriver.post("/", Login.driverLogin);
-
 module.exports = routerDriver;

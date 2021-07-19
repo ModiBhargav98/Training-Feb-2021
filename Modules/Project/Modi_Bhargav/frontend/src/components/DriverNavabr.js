@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import logo from "../ola-logo.svg";
+import logo from "../OlacabAsset/images/ola-logo.svg";
 
 const DriverNavbar = () => {
   return (
@@ -48,7 +48,7 @@ const DriverNavbar = () => {
                 Ola Corporate
               </Link>
             </li>
-            <li className="nav-item nav-special">
+            <li className="nav-item nav-special ">
               <Link to="/Support/" className="nav-link">
                 Support
               </Link>
@@ -69,17 +69,17 @@ const DriverNavbar = () => {
         </button>
         <div className="collapse navbar-collapse" id="navbarNavs">
           <ul className="navbar-nav ml-auto ml-3">
-            <li className="nav-item">
+            <li className="nav-item px-3">
               <Link to="/DriveWithOla/" className="nav-link">
                 Drive With Ola
               </Link>
             </li>
-            <li className="nav-item">
+            <li className="nav-item px-3">
               <Link to="/LeaseCar/" className="nav-link">
                 Lease a Car
               </Link>
             </li>
-            <li className="nav-item">
+            <li className="nav-item pl-3">
               <Link to="/AttachFleet/" className="nav-link">
                 Attach a Fleet
               </Link>

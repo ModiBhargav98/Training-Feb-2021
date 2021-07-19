@@ -1,12 +1,12 @@
 import React from "react";
 import DriverNavbar from "../components/DriverNavabr";
 import { Link } from "react-router-dom";
-import img1 from "../images/driverimg1.png";
-import img2 from "../images/driverimg2.png";
-import img3 from "../images/driverimg3.png";
-import img4 from "../images/driverimg4.png";
-import img5 from "../images/driverimg5.png";
-import img6 from "../images/driverimg6.png";
+import img1 from "../OlacabAsset/images/driverimg1.png";
+import img2 from "../OlacabAsset/images/driverimg2.png";
+import img3 from "../OlacabAsset/images/driverimg3.png";
+import img4 from "../OlacabAsset/images/driverimg4.png";
+import img5 from "../OlacabAsset/images/driverimg5.png";
+import img6 from "../OlacabAsset/images/driverimg6.png";
 import Footer from "../components/Footer";
 
 const DriverHomepage = () => {

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import loginimg from "../images/login.jpg";
-import logo2 from "../ola-logo.svg";
+import loginimg from "../OlacabAsset/images/otp1.jpg";
+import logo2 from "../OlacabAsset/images/ola-logo.svg";
 import { useHistory } from "react-router-dom";
 import CustomerService from "../Services/CustomerService";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const validOtp = new RegExp(/^\d{6}$/);
 
@@ -34,10 +36,18 @@ const OtpSend = (props) => {
     CustomerService.verifyOtp(otp.otp).then((res) => {
       console.log(res);
       if (res.data === "Your Otp Is Not valid") {
-        alert("You Have Enter Wrong Otp");
+        // alert("You Have Enter Wrong Otp");
+        toast.error("You Have Enter Wrong Otp!", {
+          position: "top-left",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       } else {
-        alert("Create an Account Succesfully");
-        history.push("/CityTaxi/");
+        props.history.push("/LogIn/");
       }
     });
   };
@@ -47,9 +57,10 @@ const OtpSend = (props) => {
       <div className="container-fluid container-login">
         <div className="row">
           <div className="col-xl-4">
+            <ToastContainer />
             <div className="card text-center card-body mt-5 mx-5">
               <div className="d-flex flex-row justify-content-between row-hl">
-                <Link to="/">
+                <Link to="/SignUp">
                   <div className="item-hl">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -108,7 +119,7 @@ const OtpSend = (props) => {
                     name="otp"
                     value={otp.otp}
                     onChange={handleChange}
-                    placeholder="Enter Otp Number"
+                    placeholder="One Time PassWord"
                   />
                 </div>
                 <button
@@ -125,7 +136,7 @@ const OtpSend = (props) => {
             <img
               src={loginimg}
               width="1000"
-              height="800"
+              height="1000"
               alt="ola cabs"
               className="img-fluid d-none d-md-block mb-5"
             />

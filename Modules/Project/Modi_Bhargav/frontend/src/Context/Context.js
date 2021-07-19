@@ -8,13 +8,19 @@ const OlaProvider = (props) => {
     Destination: "",
     Schedules: "Now",
     dateTime: "",
+    errors: {
+      dateTime: "",
+    },
   });
 
   const [rentalTrip, setRentalTrip] = useState({
-    pickUp: "",
+    Source: "",
     Package: "",
     Schedule: "Now",
     dateTime: "",
+    errors: {
+      dateTime: "",
+    },
   });
 
   const [outstationTrip, setOutstationTrip] = useState({
@@ -23,6 +29,10 @@ const OlaProvider = (props) => {
     Journey: "One way",
     dateTimeDepart: "",
     dateTimeReturn: "",
+    errors: {
+      dateTimeDepart: "",
+      dateTimeReturn: "",
+    },
   });
 
   const [rentalPrice, setPrice] = useState("");
@@ -40,9 +50,11 @@ const OlaProvider = (props) => {
 
   const [driverDetail, setDriverdetail] = useState({});
 
-  const [cancelTrip, setCancelTrip] = useState("");
+  const [cancelTrip, setCancelTrip] = useState([]);
 
   const [verifyOtp, setVerifyotp] = useState("");
+
+  const [phoneNumber, setNumber] = useState("");
 
   return (
     <olaContext.Provider
@@ -54,6 +66,8 @@ const OlaProvider = (props) => {
         driverDetail,
         setDriverdetail,
         outstationTrip,
+        phoneNumber,
+        setNumber,
         setOutstationTrip,
         rentalTrip,
         setRentalTrip,

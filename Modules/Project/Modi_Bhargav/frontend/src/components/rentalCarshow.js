@@ -2,9 +2,9 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { BsChevronRight } from "react-icons/bs";
 import { olaContext } from "../Context/Context";
-import Img1 from "../images/small_mini.png";
-import Img4 from "../images/prime_sedan.png";
-import Img5 from "../images/prime_suv.png";
+import Img1 from "../OlacabAsset/images/small_mini.png";
+import Img2 from "../OlacabAsset/images/prime_sedan.png";
+import Img3 from "../OlacabAsset/images/prime_suv.png";
 
 const RentalCarshow = ({ carType }) => {
   const message = localStorage.getItem("message");
@@ -48,7 +48,7 @@ const RentalCarshow = ({ carType }) => {
                 to={`/rentalCar/${car.registrationNumber}`}
                 className="nav-link text-dark h5 mb-0"
               >
-                <img src={Img4} width="60" className="mr-5" alt="prime car" />
+                <img src={Img2} width="60" className="mr-5" alt="prime car" />
                 {car.carType}
                 {message === "Login Successful" ? (
                   <>
@@ -72,7 +72,7 @@ const RentalCarshow = ({ carType }) => {
                 className="nav-link text-dark h5 mb-0"
               >
                 <img
-                  src={Img5}
+                  src={Img3}
                   width="60"
                   className="mr-5"
                   alt="primesuv car"

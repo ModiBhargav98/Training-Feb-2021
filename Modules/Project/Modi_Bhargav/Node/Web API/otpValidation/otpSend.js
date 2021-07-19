@@ -9,8 +9,8 @@ class validateOTP {
     for (let i = 1; i <= 6; i++) {
       OTP1 += code[Math.floor(Math.random() * 10)];
     }
-    console.log(OTP1);
     OTP = OTP1;
+    console.log(OTP1);
     return OTP1;
   }
 

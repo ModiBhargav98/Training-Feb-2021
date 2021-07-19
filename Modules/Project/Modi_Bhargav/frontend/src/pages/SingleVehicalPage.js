@@ -1,30 +1,39 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import MiniCar from "../images/small_mini.png";
-import Auto from "../images/small_auto.png";
-import Bike from "../images/small_bike.png";
-import Sedan from "../images/prime_sedan.png";
-import Suv from "../images/prime_suv.png";
-import Map from "../images/map.png";
-import cashImg from "../images/cashimg.jpg";
-import couponImg from "../images/coupon.png";
+import MiniCar from "../OlacabAsset/images/small_mini.png";
+import Auto from "../OlacabAsset/images/small_auto.png";
+import Bike from "../OlacabAsset/images/small_bike.png";
+import Sedan from "../OlacabAsset/images/prime_sedan.png";
+import Suv from "../OlacabAsset/images/prime_suv.png";
+import Map from "../OlacabAsset/images/map.png";
+import cashImg from "../OlacabAsset/images/cashimg.jpg";
+import couponImg from "../OlacabAsset/images/coupon.png";
 import CustomerService from "../Services/CustomerService";
 import { olaContext } from "../Context/Context";
+import moment from "moment";
 
 const SingleVehicalPage = (props) => {
   const message = localStorage.getItem("message");
 
   const token1 = localStorage.getItem("token");
 
-  const { trip, setCancelTrip, setDriverdetail, setVerifyotp } =
-    useContext(olaContext);
+  const {
+    trip,
+    setCancelTrip,
+    setRentalTrip,
+    setOutstationTrip,
+    distance,
+    setDriverdetail,
+    setVerifyotp,
+  } = useContext(olaContext);
 
   const [car, setCar] = useState([]);
 
   useEffect(() => {
     const Id = props.match.params.Id;
     console.log(Id);
-    CustomerService.getCarId(Id).then((res) => {
+
+    CustomerService.getDriverCarId(Id).then((res) => {
       console.log(res.data[0]);
       setCar(res.data[0]);
     });
@@ -37,34 +46,45 @@ const SingleVehicalPage = (props) => {
     carModel: car.carModel,
     driverEmail: car.Email,
     driverNumber: car.phoneNumber,
+    Img: car.Img,
     Source: trip.Source,
     Destination: trip.Destination,
     Schedule: trip.Schedules,
     dateTime: trip.dateTime,
-    fareDetails: car.fareDetails,
+    fareDetails: car.kilometerPrice * distance,
   };
 
   const phoneNumber = localStorage.getItem("phoneNumber");
-  console.log(phoneNumber);
-  console.log(TripData);
-  console.log(token1);
 
   const handleClick = (e) => {
     e.preventDefault();
     CustomerService.cityTripByCustomer(phoneNumber, TripData, token1).then(
       (res) => {
+        props.history.push(`/driverDetails/${res.data.result._id}`);
         setDriverdetail(res.data.carDriverData[0]);
         setCancelTrip(res.data.result);
         setVerifyotp(res.data.sendOtp);
-        // console.log(res.data);
-        props.history.push(
-          `/driverDetails/${res.data.carDriverData[0].phoneNumber}`
-        );
+        setRentalTrip({
+          Source: "",
+          Package: "",
+          Schedule: "Now",
+          dateTime: "",
+        });
+        setOutstationTrip({
+          Source: "",
+          Destination: "",
+          Journey: "One way",
+          dateTimeDepart: "",
+          dateTimeReturn: "",
+        });
       }
     );
   };
   return (
-    <div className="container-fluid container-singleVehical">
+    <div
+      className="container-fluid container-singleVehical"
+      style={{ maxHeight: "100vh" }}
+    >
       <div className="row">
         <div className="col-xl-5 singlepageCard">
           <div className="d-flex flex-row justify-content-between row-hl border-bottom">
@@ -137,7 +157,9 @@ const SingleVehicalPage = (props) => {
             ) : null}
           </div>
           {trip.Schedules === "Schedule for later" ? (
-            <div className="text-center text-primary h6">{`Your Schedule At ${trip.dateTime}`}</div>
+            <div className="text-center text-primary h5">{`Your Schedule At ${moment(
+              trip.dateTime
+            ).format("MMM DD, YYYY hh:mm a")}`}</div>
           ) : null}
           <div className="card" style={{ width: "38rem" }}>
             <div className="mt-3 mr-3">
@@ -150,16 +172,16 @@ const SingleVehicalPage = (props) => {
             </div>
             <ul className="list-group list-group-flush">
               <li className="list-group-item py-2">
-                PICKUP &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {car.Source}
+                PICKUP &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {trip.Source}
               </li>
               <li className="list-group-item py-2">
                 DROP &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                {car.Destination}
+                {trip.Destination}
               </li>
               {message === "Login Successful" ? (
                 <li className="list-group-item">
                   FARE &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &#8377;
-                  {car.fareDetails}
+                  {car.kilometerPrice * distance}
                   <div className="ml-5">
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;Total Fare
                   </div>
@@ -184,7 +206,7 @@ const SingleVehicalPage = (props) => {
           {message === "Login Successful" ? (
             <button
               type="submit"
-              className="btn btn-block bg-dark text-warning mt-4"
+              className="btn btn-block bg-dark text-warning mt-3"
               onClick={handleClick}
             >
               Continue And Book
@@ -193,7 +215,7 @@ const SingleVehicalPage = (props) => {
             <Link to="/LogIn/">
               <button
                 type="submit"
-                className="btn btn-block bg-dark text-warning mt-4"
+                className="btn btn-block bg-dark text-warning mt-3"
               >
                 Continue
               </button>

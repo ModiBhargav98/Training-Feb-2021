@@ -1,30 +1,65 @@
-const cityCar = require("../models/cityCar");
+const cityCar = require("../models/CarsAndDrivers");
+const CityAndArea = require("../models/CityAndArea");
 const express = require("express");
-const customerCitycars = express.Router();
+const customerCitycar = express.Router();
+class Data {
+  static distance(Slat1, Slon1, Dlat1, Dlon2) {
+    if (Slat1 == Dlat1 && Slon1 == Dlon2) {
+      return 0;
+    } else {
+      var radlat1 = (Math.PI * Slat1) / 180;
+      var radlat2 = (Math.PI * Dlat1) / 180;
+      var theta = Slon1 - Dlon2;
+      var radtheta = (Math.PI * theta) / 180;
+      var dist =
+        Math.sin(radlat1) * Math.sin(radlat2) +
+        Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+      if (dist > 1) {
+        dist = 1;
+      }
+      dist = Math.acos(dist);
+      dist = (dist * 180) / Math.PI;
+      dist = dist * 60 * 1.85315962;
 
-class customerCitycar {
+      return Math.ceil(dist);
+    }
+  }
+}
+class customerCitycars {
   static async customerCars(req, res) {
     const newData = req.body;
     const Source1 = newData.Source;
     const Destination1 = newData.Destination;
-    const carDetails = await cityCar.find({
+    const carDetailsSource = await cityCar.find({
       Source: Source1,
-      Destination: Destination1,
+    });
+    const carSource = await CityAndArea.findOne({
+      areaName: Source1,
     });
 
-    if (carDetails.length === 0) {
+    const carDestinaion = await CityAndArea.findOne({
+      areaName: Destination1,
+    });
+
+    if (carDetailsSource.length === 0) {
       return res.status(404).json({
         message: "Not a Any Car Avilable This Address",
       });
     }
     try {
-      res.send(carDetails);
+      if (carSource && carDestinaion) {
+        const Slat1 = carSource.latitude;
+        const Slon1 = carSource.longitude;
+        const Dlat1 = carDestinaion.latitude;
+        const Dlon2 = carDestinaion.longitude;
+        const distance1 = Data.distance(Slat1, Slon1, Dlat1, Dlon2);
+        res.send({ carDetailsSource, distance1 });
+      }
     } catch (ex) {
       console.log(ex.message);
     }
   }
 }
 
-customerCitycars.post("/", customerCitycar.customerCars);
-
-module.exports = customerCitycars;
+customerCitycar.post("/", customerCitycars.customerCars);
+module.exports = customerCitycar;

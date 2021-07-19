@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import DriverNavbar from "../components/DriverNavabr";
-import carImg1 from "../images/car-driver1.png";
-import autoImg1 from "../images/auto-driver2.png";
-import Img1 from "../images/hour-glass.svg";
-import Img2 from "../images/inbox.svg";
-import Img3 from "../images/helpline.svg";
-import Img4 from "../images/cities.svg";
-import Img5 from "../images/star.svg";
-import Img6 from "../images/dairy.svg";
-import carImg2 from "../images/car-img2.png";
+import carImg1 from "../OlacabAsset/images/car-driver1.png";
+import autoImg1 from "../OlacabAsset/images/auto-driver2.png";
+import Img1 from "../OlacabAsset/images/hour-glass.svg";
+import Img2 from "../OlacabAsset/images/inbox.svg";
+import Img3 from "../OlacabAsset/images/helpline.svg";
+import Img4 from "../OlacabAsset/images/cities.svg";
+import Img5 from "../OlacabAsset/images/star.svg";
+import Img6 from "../OlacabAsset/images/dairy.svg";
+import carImg2 from "../OlacabAsset/images/car-img2.png";
 import Footer from "../components/Footer";
 import DriverService from "../Services/DriverService";
 
@@ -170,7 +170,12 @@ const DriveWithOla = (props) => {
               <div className="card">
                 <div className="card-header" role="tab" id="heading">
                   <h5 className="mb-0 p-2">
-                    <a href="#collapse1" id="#collapse1" data-toggle="collapse">
+                    <a
+                      href="#collapse1"
+                      id="#collapse1"
+                      data-toggle="collapse"
+                      style={{ textDecoration: "none" }}
+                    >
                       Owner Documents
                     </a>
                   </h5>
@@ -181,45 +186,57 @@ const DriveWithOla = (props) => {
                   data-parent="#accordion"
                 >
                   <div className="card-body">
-                    1.PAN Card 2.Cancelled Cheque or Passbook 3.Aadhaar Card
-                    Address 4.Proof
+                    <ol>
+                      <li>PAN Card</li>
+                      <li>Cancelled Cheque or Passbook</li>
+                      <li>Aadhaar Card</li>
+                      <li>Proof </li>
+                    </ol>
                   </div>
                 </div>
               </div>
             </div>
-
             <div className="card">
               <div className="card-header" role="tab" id="heading">
-                <h5 className="mb-0 py-2">
-                  <a data-toggle="collapse" href="#collapse2">
-                    Collapse Two
+                <h5 className="mb-0 p-2">
+                  <a
+                    data-toggle="collapse"
+                    href="#collapse2"
+                    style={{ textDecoration: "none" }}
+                  >
+                    Car Documents
                   </a>
                 </h5>
               </div>
               <div id="collapse2" className="collapse" data-parent="#accordion">
                 <div className="card-body">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Sapiente dolor autem ea rerum, accusamus quia expedita earum
-                  officiis dolorum excepturi eaque exercitationem porro fuga
-                  recusandae qui obcaecati perferendis temporibus. Dolores.
+                  <ol>
+                    <li>Vehicle RC</li>
+                    <li>Vehicle Permit</li>
+                    <li>Vehicle Insurance</li>
+                  </ol>
                 </div>
               </div>
             </div>
-
             <div className="card">
               <div className="card-header" role="tab" id="heading">
-                <h5 className="mb-0">
-                  <a data-toggle="collapse" href="#collapse3">
-                    Collapse Third
+                <h5 className="mb-0 p-2">
+                  <a
+                    data-toggle="collapse"
+                    href="#collapse3"
+                    style={{ textDecoration: "none" }}
+                  >
+                    Driver Documents
                   </a>
                 </h5>
               </div>
               <div id="collapse3" className="collapse" data-parent="#accordion">
                 <div class="card-body">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Sapiente dolor autem ea rerum, accusamus quia expedita earum
-                  officiis dolorum excepturi eaque exercitationem porro fuga
-                  recusandae qui obcaecati perferendis temporibus. Dolores.
+                  <ol>
+                    <li>Driving License </li>
+                    <li>Aadhaar Card </li>
+                    <li>Address Proof</li>
+                  </ol>
                 </div>
               </div>
             </div>

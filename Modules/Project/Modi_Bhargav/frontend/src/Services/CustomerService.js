@@ -1,20 +1,18 @@
 import axios from "axios";
 
+// const CUSTOMER_API_BASE_URL = "http://20.198.103.48:1023/customer";
 const CUSTOMER_API_BASE_URL = "http://localhost:80/customer";
 
-const CAR_API_BASE_URL = "http://localhost:80/cityCar/";
-
-const RENTALCAR_API_BASE_URL = "http://localhost:80/rentalCar/";
-
-const OUTSTATION_API_BASE_URL = "http://localhost:80/outstationCar/";
+// const DRIVERCAR_API_BASE_URL = "http://20.198.103.48:1023/carsDriver/";
+const DRIVERCAR_API_BASE_URL = "http://localhost:80/carsDriver/";
 
 class CustomerService {
   getCustomers() {
     return axios.get(CUSTOMER_API_BASE_URL);
   }
 
-  createCustomer(customerData) {
-    return axios.post(CUSTOMER_API_BASE_URL + "/signup/", customerData);
+  createCustomer(data) {
+    return axios.post(CUSTOMER_API_BASE_URL + "/signup/", data);
   }
 
   loginCustomer(customer) {
@@ -57,16 +55,8 @@ class CustomerService {
     return axios.post(CUSTOMER_API_BASE_URL + "/signup/verify/" + OTP);
   }
 
-  getCarId(Id) {
-    return axios.get(CAR_API_BASE_URL + Id);
-  }
-
-  getRentalCarId(Id) {
-    return axios.get(RENTALCAR_API_BASE_URL + Id);
-  }
-
-  getOutstationCarId(Id) {
-    return axios.get(OUTSTATION_API_BASE_URL + Id);
+  getDriverCarId(Id) {
+    return axios.get(DRIVERCAR_API_BASE_URL + Id);
   }
 
   cityTripByCustomer(Number, tripData, token1) {

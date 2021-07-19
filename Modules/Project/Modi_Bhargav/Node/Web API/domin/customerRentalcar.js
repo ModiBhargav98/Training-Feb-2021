@@ -1,4 +1,4 @@
-const rentalCar = require("../models/rentalCar");
+const rentalCar = require("../models/CarsAndDrivers");
 const express = require("express");
 const customerRentalcars = express.Router();
 // const cusbookingRouter = express.Router({ mergeParams: true });
@@ -6,14 +6,14 @@ const customerRentalcars = express.Router();
 class customerRentalcar {
   static async customerCars(req, res) {
     const newData = req.body;
-    const pickUp1 = newData.pickUp;
+    const pickUp1 = newData.Source;
     const Package1 = newData.Package;
     const kilometer = Package1.split(" ");
     const distance2 = parseInt(kilometer[2]);
     const hours = parseInt(kilometer[0]);
 
     const carDetails = await rentalCar.find({
-      pickUp: pickUp1,
+      Source: pickUp1,
       Package: Package1,
     });
 

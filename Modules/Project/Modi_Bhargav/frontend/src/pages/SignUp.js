@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import validator from "validator";
 import { Link } from "react-router-dom";
-import loginimg from "../images/login.jpg";
-import logo2 from "../ola-logo.svg";
+import loginimg from "../OlacabAsset/images/register.png";
+import logo2 from "../OlacabAsset/images/ola-logo.svg";
+import "react-toastify/dist/ReactToastify.css";
 import CustomerService from "../Services/CustomerService";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const validEmail = new RegExp(
   /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
@@ -57,9 +60,26 @@ const SignUp = (props) => {
 
   const submitFunction = (e) => {
     e.preventDefault();
-    CustomerService.createCustomer(customerData).then((res) => {
-      props.history.push("/verify/otp/");
-    });
+    if (
+      customerData.customerName === "" ||
+      customerData.passWord === "" ||
+      customerData.Email === "" ||
+      customerData.phoneNumber === ""
+    ) {
+      toast.error("Please Fill Empty Filed!", {
+        position: "top-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    } else {
+      CustomerService.createCustomer(customerData).then((res) => {
+        props.history.push("/verify/otp/");
+      });
+    }
   };
 
   return (
@@ -67,9 +87,10 @@ const SignUp = (props) => {
       <div className="container-fluid container-login">
         <div className="row">
           <div className="col-xl-4">
+            <ToastContainer />
             <div className="card card-body mt-5 mx-5">
               <div className="d-flex flex-row justify-content-between row-hl">
-                <Link to="/">
+                <Link to="/LogIn">
                   <div className="item-hl">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -98,7 +119,7 @@ const SignUp = (props) => {
                 <div className="float-right">
                   {customerData.errors.customerName ? (
                     <span className="text-danger" style={{ fontSize: "20px" }}>
-                      * Name is Not Valid
+                      * Name is Not Valid Ex.Bhargav DipakKumar Modi
                     </span>
                   ) : (
                     <span className="text-success" style={{ fontSize: "20px" }}>
@@ -137,7 +158,7 @@ const SignUp = (props) => {
                       className="text-danger ml-1"
                       style={{ fontSize: "20px" }}
                     >
-                      * PassWord is Not Storng
+                      * PassWord is Not Strong Ex. Modi@321
                     </span>
                   ) : (
                     <span
@@ -169,7 +190,7 @@ const SignUp = (props) => {
                     name="passWord"
                     value={customerData.passWord}
                     onChange={handleChange}
-                    placeholder="Enter Your secqure Password"
+                    placeholder="Enter Your secure Password"
                     required
                   />
                 </div>
@@ -179,7 +200,7 @@ const SignUp = (props) => {
                       className="text-danger ml-1"
                       style={{ fontSize: "20px" }}
                     >
-                      * Email is Not Valid
+                      * Email is Not valid Ex.modibhargav1998@gmail.com
                     </span>
                   ) : (
                     <span
@@ -220,7 +241,7 @@ const SignUp = (props) => {
                       className="text-danger ml-1"
                       style={{ fontSize: "20px" }}
                     >
-                      * phoneNumber is Not Valid
+                      * phoneNumber is Not Valid Ex.5845899598
                     </span>
                   ) : (
                     <span
@@ -271,8 +292,8 @@ const SignUp = (props) => {
           <div className="col-xl-8">
             <img
               src={loginimg}
-              width="1000"
-              height="800"
+              width="640"
+              height="700"
               alt="ola cabs"
               className="img-fluid d-none d-md-block mb-5"
             />

@@ -1,5 +1,5 @@
-const Trip = require("../models/trip_model");
-const cityCar = require("../models/cityCar");
+const Trip = require("../models/DriverTrip");
+const CarDriver = require("../models/CarsAndDrivers");
 const createOtp = require("../otpValidation/otpSend");
 const express = require("express");
 const cusbookingRouter = express.Router({ mergeParams: true });
@@ -13,20 +13,20 @@ class CustomerBooking {
       registrationNumber: req.body.registrationNumber,
       driverEmail: req.body.driverEmail,
       driverNumber: req.body.driverNumber,
+      Img: req.body.Img,
       Source: req.body.Source,
       Destination: req.body.Destination,
       ScheduleDate: req.body.dateTime,
       carType: req.body.carType,
       carModel: req.body.carModel,
       carNumber: req.body.carNumber,
-      fareDetails: req.body.fareDetails,
+      fareAmount: req.body.fareDetails,
       Schedule: req.body.Schedule,
+      Status: "Pending",
     };
-
     const carIds = newTrip.registrationNumber;
     const sendOtp = createOtp.createOTP();
-
-    const carDriverData = await cityCar.find({
+    const carDriverData = await CarDriver.find({
       registrationNumber: carIds,
     });
     const addData = new Trip(newTrip);

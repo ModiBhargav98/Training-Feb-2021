@@ -1,5 +1,5 @@
 import React from "react";
-import img7 from "../olacab-logo.svg";
+import img7 from "../OlacabAsset/images/olacab-logo.svg";
 
 export default function Footer() {
   return (

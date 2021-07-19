@@ -11,10 +11,8 @@ class signUp {
     var userData = req.body;
     const email = userData.Email;
     const password = userData.passWord;
-    console.log(password);
 
     const newPassword = encrypt.encrypt(password);
-    console.log(newPassword);
 
     userData.passWord = newPassword;
 
@@ -30,7 +28,6 @@ class signUp {
   static async verifyotpData(req, res) {
     const ID = parseInt(req.params.otp);
     let verifyCode = emailSend.verifyOTP(ID);
-    console.log(verifyCode);
     if (verifyCode == true) {
       const addData = new Customer(newData);
       try {

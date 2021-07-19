@@ -1,5 +1,5 @@
-const rentalTrip = require("../models/rental_trip");
-const rentalCar = require("../models/rentalCar");
+const Trips = require("../models/DriverTrip");
+const carDriver = require("../models/CarsAndDrivers");
 const createOtp = require("../otpValidation/otpSend");
 const express = require("express");
 const rentalcustomerRouter = express.Router({ mergeParams: true });
@@ -12,20 +12,22 @@ class rentalcustomerBooking {
       customerNumber: ID,
       customerEmail: req.body.customerEmail,
       ScheduleDate: req.body.ScheduleDate,
+      Img: req.body.Img,
       Schedule: req.body.Schedule,
-      pickUp: req.body.pickUp,
+      Source: req.body.pickUp,
       Package: req.body.Package,
       driverEmail: req.body.driverEmail,
       driverNumber: req.body.driverNumber,
       registrationNumber: req.body.registrationNumber,
       carType: req.body.carType,
       fareAmount: req.body.distance * req.body.fareAmount,
+      Status: "Pending",
     };
-    const Number = newTrip.driverNumber;
+    const Number = newTrip.registrationNumber;
     const sendOtp = createOtp.createOTP();
-    const carDriverData = await rentalCar.find({ phoneNumber: Number });
+    const carDriverData = await carDriver.find({ registrationNumber: Number });
 
-    const addData = new rentalTrip(newTrip);
+    const addData = new Trips(newTrip);
     try {
       const result = await addData.save();
       res.status(200).send({ carDriverData, result, sendOtp });

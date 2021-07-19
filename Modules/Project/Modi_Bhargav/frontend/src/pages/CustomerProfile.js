@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import userImg from "../images/userProfile.jpg";
-import userImgs from "../images/userprofileimg.svg";
-import userPass from "../images/userPass.svg";
-import olaMoney from "../images/ola-money.png";
+import userImg from "../OlacabAsset/images/userProfile.jpg";
+import userImgs from "../OlacabAsset/images/userprofileimg.svg";
+import userPass from "../OlacabAsset/images/userPass.svg";
+import olaMoney from "../OlacabAsset/images/ola-money.png";
 import { useHistory } from "react-router-dom";
 import CustomerService from "../Services/CustomerService";
-import { olaContext } from "../Context/Context";
 
 const CustomerProfile = (props) => {
   const token1 = localStorage.getItem("token");

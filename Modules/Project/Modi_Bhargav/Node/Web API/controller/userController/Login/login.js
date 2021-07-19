@@ -10,7 +10,6 @@ class Login {
       Email: req.body.Email,
       passWord: req.body.passWord,
     };
-
     let token1 = jwt.sign({ userData }, global.config.secretKey, {
       algorithm: global.config.algorithm,
       expiresIn: "24h",

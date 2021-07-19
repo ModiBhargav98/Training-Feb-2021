@@ -1,15 +1,13 @@
 import React, { useContext } from "react";
-import "react-phone-number-input/style.css";
 import { Link } from "react-router-dom";
-import loginimg from "../images/login.jpg";
-import logo2 from "../ola-logo.svg";
-import { useHistory } from "react-router-dom";
+import loginimg from "../OlacabAsset/images/loginimg.webp";
+import logo2 from "../OlacabAsset/images/ola-logo.svg";
 import CustomerService from "../Services/CustomerService";
 import { olaContext } from "../Context/Context";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const LogIn = (props) => {
-  const history = useHistory();
-
   const { trip, rentalTrip, outstationTrip, customer, setCustomer } =
     useContext(olaContext);
 
@@ -26,19 +24,26 @@ const LogIn = (props) => {
         localStorage.setItem("message", res.data.message);
         localStorage.setItem("phoneNumber", res.data.customer);
         if (trip.Source.length > 0 && trip.Destination.length > 0) {
-          history.push("/CityTaxi/");
+          props.history.push("/CityTaxi/");
         } else if (
-          rentalTrip.pickUp.length > 0 &&
+          rentalTrip.Source.length > 0 &&
           rentalTrip.Package.length > 0
         ) {
-          history.push("/Rental/");
+          props.history.push("/Rental/");
         } else {
-          history.push("/Outstation/");
+          props.history.push("/Outstation/");
         }
       })
       .catch((err) => {
-        console.log(err);
-        alert("Your Email And Password In correct");
+        toast.error("Your Email Id And PassWord Wrong!", {
+          position: "top-left",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       });
   };
   return (
@@ -46,6 +51,7 @@ const LogIn = (props) => {
       <div className="container-fluid container-login">
         <div className="row">
           <div className="col-xl-4">
+            <ToastContainer />
             <div className="card text-center card-body mt-5 mx-5">
               <div className="d-flex flex-row justify-content-between row-hl">
                 <Link to="/cityTaxi/">
@@ -138,10 +144,10 @@ const LogIn = (props) => {
           <div className="col-xl-8">
             <img
               src={loginimg}
-              width="1000"
-              height="800"
+              width="880"
+              height="850"
               alt="ola cabs"
-              className="img-fluid d-none d-md-block mb-5"
+              className="img-fluid d-none d-md-block"
             />
           </div>
         </div>

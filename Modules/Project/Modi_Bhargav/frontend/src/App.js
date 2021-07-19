@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "./pages/Home";
 import LogIn from "./pages/LogIn";
 import CitytaxiBooking from "./pages/CitytaxiBooking";
-import OutstationBooking from "./pages/OutstationBooking";
+import OutstationBooking from "./pages/OutstationsBookings";
 import CustomerProfile from "./pages/CustomerProfile";
 import CustomerRides from "./pages/CustomerRides";
 import RentalBooking from "./pages/RentalBooking";
@@ -32,18 +32,12 @@ import OutstationCarSinglepage from "./pages/OutstationcarSinglepage";
 import Driver_AdminLogin from "./pages/Driver_AdminLogin";
 import AdminPage from "./pages/AdminPage";
 import DriverInfo from "./pages/DriverInfo";
-import CityForm from "./pages/CityForm";
-import RentalForm from "./pages/RentalForm";
-import OutstationForm from "./pages/OutstationForm";
-import CityTriphistory from "./pages/CityTriphistory";
-import OutstationTriphistory from "./pages/OutstationTriphistory";
-import RentalTriphistory from "./pages/RentalTriphistory";
-import CityDriverCards from "./pages/CityDriverCards";
-import OutstationDriverCard from "./pages/OutstationDriverCard";
-import RentalDriverCards from "./pages/RentalDriverCards";
-import EditCityForm from "./pages/editCityDriver";
-import EditOutstationDriver from "./pages/editOutstationDriver";
-import EditRentalDriver from "./pages/editRentalDriver";
+import AddData from "./pages/AddDriver";
+import AllTriphistory from "./pages/AllTriphistory";
+import DriverCards from "./pages/AllDriverCards";
+import DriverOtp from "./pages/DriverOtp";
+import EnquiryList from "./pages/DriverEnquiry";
+import EditForm from "./pages/editDriverData";
 
 function App() {
   return (
@@ -85,27 +79,12 @@ function App() {
           <Route path="/Driver-Admin/Login/" component={Driver_AdminLogin} />
           <Route path="/AdminPage/" component={AdminPage} />
           <Route path="/DriverProfile/:id" component={DriverInfo} />
-          <Route path="/CityForm/" component={CityForm} />
-          <Route path="/RentalForm/" component={RentalForm} />
-          <Route path="/OutstationForm/" component={OutstationForm} />
-          <Route path="/CityTriphistory/" component={CityTriphistory} />
-          <Route
-            path="/OutstationTriphistory/"
-            component={OutstationTriphistory}
-          />
-          <Route path="/RentalTriphistory/" component={RentalTriphistory} />
-          <Route path="/CityDriverData/" component={CityDriverCards} />
-          <Route
-            path="/OutstationDriverData/"
-            component={OutstationDriverCard}
-          />
-          <Route path="/RentalDriverCards/" component={RentalDriverCards} />
-          <Route path="/EditCityForm/:id" component={EditCityForm} />
-          <Route
-            path="/EditOutstationDriver/:id"
-            component={EditOutstationDriver}
-          />
-          <Route path="/EditRentalDriver/:id" component={EditRentalDriver} />
+          <Route path="/AddDetails/" component={AddData} />
+          <Route path="/Triphistory/" component={AllTriphistory} />
+          <Route path="/DriversData/" component={DriverCards} />
+          <Route path="/DriverOtp/Verify/:id/:id1" component={DriverOtp} />
+          <Route path="/EditData/:id" component={EditForm} />
+          <Route path="/EnquiryData/" component={EnquiryList} />
         </Switch>
       </Router>
     </>

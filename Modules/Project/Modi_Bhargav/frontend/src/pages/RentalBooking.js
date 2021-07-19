@@ -1,16 +1,17 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
-import logo2 from "../ola-logo.svg";
-import multiImg from "../images/multi_drops.svg";
-import hourlyImg from "../images/hourly_packages.svg";
-import trustedImg from "../images/trusted_drivers.svg";
-import immediateImg from "../images/immediate_pickup.svg";
-import emptyImg from "../images/rental-empty.png";
+import logo2 from "../OlacabAsset/images/ola-logo.svg";
+import multiImg from "../OlacabAsset/images/multi_drops.svg";
+import hourlyImg from "../OlacabAsset/images/hourly_packages.svg";
+import trustedImg from "../OlacabAsset/images/trusted_drivers.svg";
+import immediateImg from "../OlacabAsset/images/immediate_pickup.svg";
+import emptyImg from "../OlacabAsset/images/rental-empty.png";
 import { olaContext } from "../Context/Context";
 import CustomerService from "../Services/CustomerService";
 import RentalCarshow from "../components/rentalCarshow";
 import { DateTimePickerComponent } from "@syncfusion/ej2-react-calendars";
+import moment from "moment";
 
 const RentalBooking = () => {
   const message = localStorage.getItem("message");
@@ -21,6 +22,45 @@ const RentalBooking = () => {
   const [messages, setMessage] = useState(false);
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
+    let errors = rentalTrip.errors;
+    switch (name) {
+      case "dateTime":
+        const timeString = value;
+        const date = moment(new Date()).format("DD");
+        const hou = moment(new Date()).format("hh");
+        const min = moment(new Date()).format("mm");
+        const time = moment(new Date()).format("a");
+        const date1 = moment(timeString).format("DD");
+        const hou1 = moment(timeString).format("hh");
+        const min1 = moment(timeString).format("mm");
+        const time1 = moment(timeString).format("a");
+        if (timeString === null) {
+          errors.dateTime = "";
+        } else if (date === date1) {
+          if (time === "am" && time1 === "pm") {
+            errors.dateTime = false;
+          } else if (hou1 === "12" && time === time1 && hou < hou1) {
+            errors.dateTime = true;
+          } else {
+            errors.dateTime = true;
+            if (hou < hou1 && time === time1) {
+              errors.dateTime = false;
+            } else if (hou === hou1 && time === time1) {
+              if (min <= min1) {
+                errors.dateTime = false;
+              } else {
+                errors.dateTime = true;
+              }
+            } else {
+              errors.dateTime = true;
+            }
+          }
+        } else {
+          errors.dateTime = false;
+        }
+        break;
+    }
     setRentalTrip({ ...rentalTrip, [e.target.name]: e.target.value });
   };
 
@@ -37,7 +77,7 @@ const RentalBooking = () => {
       })
       .catch((err) => {
         setCartype([]);
-        if (rentalTrip.pickUp !== "" || rentalTrip.Package !== "") {
+        if (rentalTrip.Source !== "" && rentalTrip.Package !== "") {
           setMessage(true);
         } else {
           setMessage(false);
@@ -136,15 +176,20 @@ const RentalBooking = () => {
               </Link>
             </Tooltip>
           </div>
-          <div className="form-group mt-1">
-            <input
-              type="text"
-              name="pickUp"
-              value={rentalTrip.pickUp}
+          <div className="form-group">
+            <select
+              id="schedual1"
+              name="Source"
+              className="form-select"
+              value={rentalTrip.Source}
               onChange={handleChange}
-              className="form-control form-control-md bg-light"
-              placeholder="FROM     Enter pickup location"
-            />
+            >
+              <option value="" selected>
+                FROM Enter pickup location
+              </option>
+              <option value="rajkot">Rajkot</option>
+              <option value="ahmedabad">Ahmedabad</option>
+            </select>
           </div>
           <div className="form-group">
             <select
@@ -152,10 +197,12 @@ const RentalBooking = () => {
               name="Package"
               value={rentalTrip.Package}
               onChange={handleChange}
-              className="form-select bg-light"
+              className="form-select"
               placeholder="when"
             >
-              <option selected>Select a package</option>
+              <option value="" selected>
+                Select a package
+              </option>
               <option value="1 hrs 10 km">1 hrs 10 km</option>
               <option value="2 hrs 20 km">2 hrs 20 km</option>
               <option value="3 hrs 30 km">3 hrs 30 km</option>
@@ -187,11 +234,26 @@ const RentalBooking = () => {
               <DateTimePickerComponent
                 placeholder="Choose a date and time"
                 min={new Date().toISOString().split("T")[0]}
+                max={
+                  new Date(new Date().getTime() + 6 * 24 * 60 * 60 * 1000)
+                    .toISOString()
+                    .split("T")[0]
+                }
                 name="dateTime"
                 value={rentalTrip.dateTime}
                 onChange={handleChange}
                 className="form-control form-control-md"
-              ></DateTimePickerComponent>
+              />
+              {rentalTrip.errors.dateTime === true ? (
+                <span className="text-danger ml-1" style={{ fontSize: "20px" }}>
+                  Your Selected Time Is Not Valid !
+                </span>
+              ) : null}
+              {rentalTrip.errors.dateTime === "" ? (
+                <span className="text-danger ml-1" style={{ fontSize: "20px" }}>
+                  Please Select a Time And Date !
+                </span>
+              ) : null}
             </div>
           ) : null}
           {messages ? (
@@ -201,13 +263,19 @@ const RentalBooking = () => {
               <p>Sorry, we don't serve this location yet</p>
             </div>
           ) : null}
-          {carType.length != 0 ? (
-            <h5 className="text-dark">Avilable Rides</h5>
-          ) : null}
-          {rentalTrip.pickUp.length > 0 && rentalTrip.Package.length > 0 ? (
-            <>
-              <RentalCarshow carType={carType} />
-            </>
+          {rentalTrip.Source !== "" && rentalTrip.Package !== "" ? (
+            rentalTrip.Schedule === "Now" ? (
+              <>
+                <h5 className="text-dark">Avilable Rides</h5>
+                <RentalCarshow carType={carType} />
+              </>
+            ) : rentalTrip.errors.dateTime === false &&
+              rentalTrip.errors.dateTime !== "" ? (
+              <>
+                <h5 className="text-dark">Avilable Rides</h5>
+                <RentalCarshow carType={carType} />
+              </>
+            ) : null
           ) : (
             <div>
               <h4 className="ml-3 my-4">Why book with us ?</h4>

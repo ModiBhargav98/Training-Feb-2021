@@ -1,22 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import OlaLogo from "../olacab-logo.svg";
-import DriverService from "../Services/DriverService";
+import OlaLogo from "../OlacabAsset/images/olacab-logo.svg";
+import { olaContext } from "../Context/Context";
 
 const AdminNavbar = () => {
-  const [phoneNumber, setNumber] = useState("");
-
+  const { phoneNumber, setNumber } = useContext(olaContext);
   const handleChange = (e) => {
     setNumber(e.target.value);
   };
 
-  const handleClick = (e) => {
-    e.preventDefault();
-
-    DriverService.GetDriverByTrips(phoneNumber).then((res) => {
-      setNumber(res.data);
-    });
-  };
   return (
     <nav
       className="navbar navbar-expand-lg fixed-top navbar-light"
@@ -39,109 +31,25 @@ const AdminNavbar = () => {
 
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav mr-auto">
-          <li className="nav-item dropdown ml-5 text-dark h4 mt-2">
-            <Link
-              className="nav-link btn btn-dark text-white btn-lg dropdown-toggle dropdown-toggle-split"
-              id="navbarDropdown"
-              role="button"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              <span className="pr-3 pt-3">CityDriver</span>
+          <li className="nav-item py-1 mt-1 ml-5">
+            <Link className="nav-link text-dark h4" to="/AddDetails/">
+              AddDetails
             </Link>
-            <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-              <Link
-                className="dropdown-item text-primary font-weight-bold h4"
-                to="/CityDriverData/"
-              >
-                Show List
-              </Link>
-              <div className="dropdown-divider"></div>
-              <Link
-                className="dropdown-item text-primary font-weight-bold h4"
-                to="/CityForm/"
-              >
-                Add Details
-              </Link>
-              <div className="dropdown-divider"></div>
-              <Link
-                className="dropdown-item text-primary font-weight-bold h4"
-                to="/CityTriphistory/"
-              >
-                City History
-              </Link>
-            </div>
           </li>
-          <li className="nav-item dropdown ml-5 text-dark h4 mt-2">
-            <a
-              className="nav-link btn btn-dark text-white btn-lg dropdown-toggle dropdown-toggle-split"
-              href="#"
-              id="navbarDropdown"
-              role="button"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              <span className="pr-3 pt-3">OutstationDriver</span>
-            </a>
-            <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-              <Link
-                className="dropdown-item text-primary font-weight-bold h4"
-                to="/OutstationDriverData/"
-              >
-                Show List
-              </Link>
-              <div className="dropdown-divider"></div>
-              <Link
-                className="dropdown-item text-primary font-weight-bold h4"
-                to="/OutstationForm/"
-              >
-                Add Details
-              </Link>
-              <div className="dropdown-divider"></div>
-              <Link
-                className="dropdown-item text-primary font-weight-bold h4"
-                to="/OutstationTriphistory/"
-              >
-                Outstation History
-              </Link>
-            </div>
+          <li className="nav-item py-1 mt-1 ml-5">
+            <Link className="nav-link text-dark h4" to="/DriversData/">
+              AllDrivers
+            </Link>
           </li>
-          <li className="nav-item dropdown ml-5 text-dark h4 mt-2">
-            <a
-              className="nav-link btn btn-dark text-white btn-lg dropdown-toggle dropdown-toggle-split"
-              href="#"
-              id="navbarDropdown"
-              role="button"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              <span className="pr-3 pt-3">RentalDriver</span>
-            </a>
-            <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-              <Link
-                className="dropdown-item text-primary font-weight-bold h4"
-                to="/RentalDriverCards/"
-              >
-                Show List
-              </Link>
-              <div className="dropdown-divider"></div>
-              <Link
-                className="dropdown-item text-primary font-weight-bold h4"
-                to="/RentalForm/"
-              >
-                Add Details
-              </Link>
-              <div className="dropdown-divider"></div>
-              <Link
-                className="dropdown-item text-primary font-weight-bold h4"
-                to="/RentalTriphistory/"
-              >
-                Rental History
-              </Link>
-            </div>
+          <li className="nav-item py-1 mt-1 ml-5">
+            <Link className="nav-link text-dark h4" to="/Triphistory/">
+              TripHistory
+            </Link>
+          </li>
+          <li className="nav-item py-1 mt-1 ml-5">
+            <Link className="nav-link text-dark h4" to="/EnquiryData/">
+              EnquiryList
+            </Link>
           </li>
         </ul>
         <form className="form-inline my-2 my-lg-0">
@@ -153,13 +61,6 @@ const AdminNavbar = () => {
             onChange={handleChange}
             placeholder="Search Here"
           />
-          <button
-            className="btn btn-primary my-2 my-sm-0"
-            type="submit"
-            onClick={handleClick}
-          >
-            Search
-          </button>
         </form>
       </div>
     </nav>

@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import DriverService from "../Services/DriverService";
 
 const Driver_AdminLogin = (props) => {
@@ -23,36 +25,47 @@ const Driver_AdminLogin = (props) => {
     if (driverAdmin.checkbox === true) {
       DriverService.loginDriverAdmin(driverAdmin)
         .then((res) => {
-          localStorage.setItem("token1", res.data.Token);
-          if (driverAdmin.Email === "meet81@gmail.com") {
+          if (driverAdmin.Email === "modibhargav1998@gmail.com") {
             props.history.push("/AdminPage/");
-          } else if (res.data.message === "Login Successful cityDriver") {
-            localStorage.setItem("messages", res.data.message);
-            props.history.push(
-              `/DriverProfile/${res.data.cityDriver1.registrationNumber}`
-            );
-          } else if (res.data.message === "Login Successful outstationDriver") {
-            localStorage.setItem("messages", res.data.message);
-            props.history.push(
-              `/DriverProfile/${res.data.outstationDriver1.registrationNumber}`
-            );
           } else {
-            localStorage.setItem("messages", res.data.message);
+            localStorage.setItem("token1", res.data.Token);
+            localStorage.setItem("message1", res.data.message);
+            localStorage.setItem("phoneNumber1", res.data.driver.phoneNumber);
+            console.log(res.data);
             props.history.push(
-              `/DriverProfile/${res.data.rentalDriver1.registrationNumber}`
+              `/DriverProfile/${res.data.driver.registrationNumber}`
             );
           }
         })
         .catch((err) => {
           console.log(err);
-          alert("Your Email And Password In correct");
+          // alert("Your Email And Password In correct");
+          toast.error("Your Email Id And PassWord Wrong!", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
         });
     } else {
-      alert("please checked rember button");
+      // alert("please checked rember button");
+      toast.error("please checked rember button!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   };
   return (
     <div className="container mt-5">
+      <ToastContainer />
       <div className="card card-body w-50 m-auto border-dark bg-primary">
         <div className="text-center text-warning my-3">
           <h3>Enter your Email Id and Password</h3>
@@ -107,7 +120,7 @@ const Driver_AdminLogin = (props) => {
           </div>
           <div className="form-check ml-3 my-3">
             <input
-              className="form-check-input "
+              className="form-check-input"
               type="checkbox"
               name="checkbox"
               checked={driverAdmin.checkbox}

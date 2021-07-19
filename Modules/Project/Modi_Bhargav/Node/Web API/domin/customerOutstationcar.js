@@ -1,4 +1,4 @@
-const outstationCars = require("../models/outstationCars");
+const outstationCars = require("../models/CarsAndDrivers");
 const CityAndArea = require("../models/CityAndArea");
 const express = require("express");
 const customerOutstationcars = express.Router();

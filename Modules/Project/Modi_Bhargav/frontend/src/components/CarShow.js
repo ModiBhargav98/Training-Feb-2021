@@ -1,18 +1,23 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { BsChevronRight } from "react-icons/bs";
-import Img1 from "../images/small_mini.png";
-import Img2 from "../images/small_auto.png";
-import Img3 from "../images/small_bike.png";
-import Img4 from "../images/prime_sedan.png";
-import Img5 from "../images/prime_suv.png";
+import Img1 from "../OlacabAsset/images/small_mini.png";
+import Img2 from "../OlacabAsset/images/small_auto.png";
+import Img3 from "../OlacabAsset/images/small_bike.png";
+import Img4 from "../OlacabAsset/images/prime_sedan.png";
+import Img5 from "../OlacabAsset/images/prime_suv.png";
+import { olaContext } from "../Context/Context";
 
 const CarShow = ({ carType }) => {
   const message = localStorage.getItem("message");
 
+  const { distance, trip } = useContext(olaContext);
+
   return (
     <div>
-      {message !== "Login Successful" ? (
+      {message !== "Login Successful" &&
+      trip.Source !== "" &&
+      trip.Destination !== "" ? (
         <p className="text-center h3 text-primary">
           please logIn to check exact prices
         </p>
@@ -27,10 +32,9 @@ const CarShow = ({ carType }) => {
               >
                 <img src={Img1} width="60" className="mr-5" alt="mini car" />
                 {car.carType}
-
                 {message === "Login Successful" ? (
                   <div className="float-right mt-2">
-                    &#8377; {car.fareDetails} &nbsp;&nbsp;
+                    &#8377; {car.kilometerPrice * distance} &nbsp;&nbsp;
                     <BsChevronRight />
                   </div>
                 ) : (
@@ -51,7 +55,7 @@ const CarShow = ({ carType }) => {
                 {car.carType}
                 {message === "Login Successful" ? (
                   <div className="float-right mt-2">
-                    &#8377; {car.fareDetails} &nbsp;&nbsp;
+                    &#8377; {car.kilometerPrice * distance} &nbsp;&nbsp;
                     <BsChevronRight />
                   </div>
                 ) : (
@@ -72,7 +76,7 @@ const CarShow = ({ carType }) => {
                 {car.carType}
                 {message === "Login Successful" ? (
                   <div className="float-right mt-2">
-                    &#8377; {car.fareDetails} &nbsp;&nbsp;
+                    &#8377; {car.kilometerPrice * distance} &nbsp;&nbsp;
                     <BsChevronRight />
                   </div>
                 ) : (
@@ -93,7 +97,7 @@ const CarShow = ({ carType }) => {
                 {car.carType}
                 {message === "Login Successful" ? (
                   <div className="float-right mt-2">
-                    &#8377; {car.fareDetails} &nbsp;&nbsp;
+                    &#8377; {car.kilometerPrice * distance} &nbsp;&nbsp;
                     <BsChevronRight />
                   </div>
                 ) : (
@@ -119,7 +123,7 @@ const CarShow = ({ carType }) => {
                 {car.carType}
                 {message === "Login Successful" ? (
                   <div className="float-right mt-2">
-                    &#8377; {car.fareDetails} &nbsp;&nbsp;
+                    &#8377; {car.kilometerPrice * distance} &nbsp;&nbsp;
                     <BsChevronRight />
                   </div>
                 ) : (

@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import MiniCar from "../images/small_mini.png";
-import Sedan from "../images/prime_sedan.png";
-import Suv from "../images/prime_suv.png";
-import acImg from "../images/ac.svg";
-import valuemonryImg from "../images/value_for_money.svg";
-import hatchbackImg from "../images/regular_hatchback.svg";
-import cashImg from "../images/cashimg.jpg";
-import couponImg from "../images/coupon.png";
+import MiniCar from "../OlacabAsset/images/small_mini.png";
+import Sedan from "../OlacabAsset/images/prime_sedan.png";
+import Suv from "../OlacabAsset/images/prime_suv.png";
+import acImg from "../OlacabAsset/images/ac.svg";
+import valuemonryImg from "../OlacabAsset/images/value_for_money.svg";
+import hatchbackImg from "../OlacabAsset/images/regular_hatchback.svg";
+import cashImg from "../OlacabAsset/images/cashimg.jpg";
+import couponImg from "../OlacabAsset/images/coupon.png";
 import CustomerService from "../Services/CustomerService";
 import { olaContext } from "../Context/Context";
+import moment from "moment";
 
 const RentalCarSinglePage = (props) => {
   const message = localStorage.getItem("message");
@@ -24,6 +25,8 @@ const RentalCarSinglePage = (props) => {
     setCancelTrip,
     setDriverdetail,
     setVerifyotp,
+    setTrip,
+    setOutstationTrip,
   } = useContext(olaContext);
   console.log(rentalTrip);
 
@@ -32,7 +35,7 @@ const RentalCarSinglePage = (props) => {
   useEffect(() => {
     const Id = props.match.params.Id;
     console.log(Id);
-    CustomerService.getRentalCarId(Id).then((res) => {
+    CustomerService.getDriverCarId(Id).then((res) => {
       console.log(res.data[0]);
       console.log(res);
       setCar(res.data[0]);
@@ -43,9 +46,10 @@ const RentalCarSinglePage = (props) => {
     customerEmail: customer.Email,
     ScheduleDate: rentalTrip.dateTime,
     Schedule: rentalTrip.Schedule,
-    pickUp: rentalTrip.pickUp,
+    pickUp: rentalTrip.Source,
     Package: rentalTrip.Package,
     driverEmail: car.Email,
+    Img: car.Img,
     driverNumber: car.phoneNumber,
     registrationNumber: car.registrationNumber,
     carType: car.carType,
@@ -68,14 +72,27 @@ const RentalCarSinglePage = (props) => {
       setDriverdetail(res.data.carDriverData[0]);
       setCancelTrip(res.data.result);
       setVerifyotp(res.data.sendOtp);
-      // console.log(res.data);
-      props.history.push(
-        `/driverDetails/${res.data.carDriverData[0].phoneNumber}`
-      );
+      setTrip({
+        Source: "",
+        Destination: "",
+        Schedules: "Now",
+        dateTime: "",
+      });
+      setOutstationTrip({
+        Source: "",
+        Destination: "",
+        Journey: "One way",
+        dateTimeDepart: "",
+        dateTimeReturn: "",
+      });
+      props.history.push(`/driverDetails/${res.data.result._id}`);
     });
   };
   return (
-    <div className="container-fluid container-rentalVehical">
+    <div
+      className="container-fluid container-rentalVehical"
+      style={{ maxHeight: "100vh" }}
+    >
       <div className="row">
         <div className="col-xl-5 rentalSinglepage">
           <div className="d-flex flex-row justify-content-between row-hl border-bottom">
@@ -128,28 +145,30 @@ const RentalCarSinglePage = (props) => {
             ) : null}
           </div>
           {rentalTrip.Schedule === "Schedule for later" ? (
-            <div className="text-center text-primary h6">{`Your Schedule At ${rentalTrip.dateTime}`}</div>
+            <div className="text-center text-primary h5">{`Your Schedule At ${moment(
+              rentalTrip.dateTime
+            ).format("MMM DD, YYYY hh:mm a")}`}</div>
           ) : null}
           <div className="card" style={{ width: "38rem" }}>
             <ul className="list-group list-group-flush">
               <li className="list-group-item py-2 h6">
-                PICKUP &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {rentalTrip.pickUp}
+                PICKUP &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {rentalTrip.Source}
               </li>
-              <li className="list-group-item py-2 h6">
+              <li className="list-group-item py-1 h6">
                 DEPART &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; just a minues
               </li>
             </ul>
           </div>
           <div className="d-flex flex-row justify-content-between row-hl mt-2 card">
-            <div className="item-hl pt-3">
+            <div className="item-hl pt-1">
               <img src={valuemonryImg} width="40" alt="value of money" />
               Value For Money
             </div>
-            <div className="item-hl pt-3">
+            <div className="item-hl pt-1">
               <img src={acImg} width="40" alt="ac" />
               AC
             </div>
-            <div className="item-hl pt-3">
+            <div className="item-hl pt-1">
               <img src={hatchbackImg} width="40" alt="hatchback" />
               Regular Hatchback
             </div>
@@ -244,7 +263,7 @@ const RentalCarSinglePage = (props) => {
           {message === "Login Successful" ? (
             <button
               type="submit"
-              className="btn btn-block bg-dark text-warning mt-3"
+              className="btn btn-block bg-dark text-warning mt-2"
               onClick={handleClick}
             >
               Continue And Book
@@ -254,7 +273,7 @@ const RentalCarSinglePage = (props) => {
             <Link to="/LogIn/">
               <button
                 type="submit"
-                className="btn btn-block bg-dark text-warning mt-3"
+                className="btn btn-block bg-dark text-warning mt-2"
               >
                 Continue
               </button>
